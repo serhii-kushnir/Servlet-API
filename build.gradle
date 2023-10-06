@@ -18,8 +18,6 @@ dependencies {
 
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
-
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.73'
 }
 
 test {
