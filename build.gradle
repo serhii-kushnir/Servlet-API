@@ -18,6 +18,8 @@ dependencies {
 
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+
+    implementation group: 'org.thymeleaf', name: 'thymeleaf', version: '3.1.2.RELEASE'
 }
 
 test {
