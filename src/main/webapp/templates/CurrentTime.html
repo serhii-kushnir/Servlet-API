@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -10,7 +10,7 @@
 <body>
     <center>
         <h1>Current Time</h1>
-        <p th:text="${queryParam}">%s</p>
+        <p th:text="${currentTime}"></p>
     </center>
 </body>
 </html>
