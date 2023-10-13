@@ -1,30 +1,48 @@
 package org.example.servlet;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.annotation.WebServlet;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.example.servlet.utility.Thymeleaf;
+import org.example.servlet.utility.Constant;
 import org.example.servlet.utility.DataTimeZone;
-import org.example.servlet.utility.HtmlPage;
+import org.example.servlet.utility.Respaonce;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @WebServlet("/time")
 public final class TimeServlet extends HttpServlet {
+    private static final String HTML_TEMPLATE = "CurrentTime";
+    private transient TemplateEngine thymeleaf;
+
+    @Override
+    public void init(final ServletConfig config) {
+        thymeleaf = new TemplateEngine();
+        Thymeleaf.init(thymeleaf);
+    }
 
     @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
 
-        try (PrintWriter out = resp.getWriter()) {
-            out.println(
-                    HtmlPage.getHtmlPage(
-                            DataTimeZone.getDataTimeZone()));
-        } catch (IOException e) {
-            throw new HtmlRenderingException("Error rendering HTML content");
+        String dataTimeZone;
+        String queryString = req.getQueryString();
+
+        if (Constant.VALID_TIMEZONES.contains(queryString)) {
+            String parseTimeZone = DataTimeZone.parseTimeZone(queryString);
+            dataTimeZone = DataTimeZone.getDataTimeZone(parseTimeZone);
+        } else {
+            dataTimeZone = DataTimeZone.getDataTime();
         }
+
+        Context context = Thymeleaf.getContext(dataTimeZone);
+        Respaonce.writer(thymeleaf, HTML_TEMPLATE, context, resp);
     }
 }
+
