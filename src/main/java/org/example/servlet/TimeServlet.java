@@ -32,29 +32,28 @@ public final class TimeServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
 
-        String dataTimeZone = DataTimeZone.getDataTime();
+        String dataTimeZone = DataTimeZone.getCurrentTime();
         String queryString = req.getQueryString();
         Cookie[] cookies = req.getCookies();
 
         if (Constant.VALID_TIMEZONES.contains(queryString)) {
-            String parseTimeZone = DataTimeZone.parseTimeZone(queryString);
-            dataTimeZone = DataTimeZone.getDataTimeZone(parseTimeZone);
+            String parseUtcTimeZone = DataTimeZone.parseTimeZone(queryString);
+            dataTimeZone = DataTimeZone.getCurrentUtcTime(parseUtcTimeZone);
 
-            resp.addCookie(new Cookie("lastTimeZone", parseTimeZone));
-        } else {
-            if (cookies != null) {
+            resp.addCookie(new Cookie("lastTimeZone", parseUtcTimeZone));
+        } else if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if ("lastTimeZone".equals(cookie.getName())) {
-                        String lastTimeZone = cookie.getValue();
-                        dataTimeZone = DataTimeZone.getDataTimeZone(lastTimeZone);
+                        String lastUtcTimeZone = cookie.getValue();
+                        dataTimeZone = DataTimeZone.getCurrentUtcTime(lastUtcTimeZone);
                         break;
                     }
                 }
-            }
         }
 
         Context context = Thymeleaf.getContext(dataTimeZone);
         Respaonce.writer(thymeleaf, HTML_TEMPLATE, context, resp);
     }
 }
+
 
