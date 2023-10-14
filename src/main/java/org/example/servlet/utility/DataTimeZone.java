@@ -9,25 +9,25 @@ public final class DataTimeZone {
     private DataTimeZone() {
     }
 
-    public static String getDataTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    public static String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        return dateFormat.format(new Date());
+        return sdf.format(new Date());
     }
 
-    public static String getDataTimeZone(final String timeZoneParameter) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z" + timeZoneParameter);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    public static String getCurrentUtcTime(final String timeZoneParameter) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z" + timeZoneParameter);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        return dateFormat.format(new Date());
+        return sdf.format(new Date());
     }
 
-    public static String parseTimeZone(final String queryString) {
-        if (queryString.length() > 12 && queryString.length() < 15) {
-            return queryString.substring(12, 14);
-        } else if ((queryString.length() > 12 && queryString.length() < 16)) {
-            return queryString.substring(12, 15);
+    public static String parseTimeZone(final String timeZoneQueryString) {
+        if (timeZoneQueryString.length() > 12 && timeZoneQueryString.length() < 15) {
+            return timeZoneQueryString.substring(12, 14);
+        } else if ((timeZoneQueryString.length() > 12 && timeZoneQueryString.length() < 16)) {
+            return timeZoneQueryString.substring(12, 15);
         }
 
         return "";

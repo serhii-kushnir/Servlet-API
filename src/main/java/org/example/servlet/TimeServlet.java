@@ -3,6 +3,7 @@ package org.example.servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,18 +32,28 @@ public final class TimeServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
 
-        String dataTimeZone;
+        String dataTimeZone = DataTimeZone.getCurrentTime();
         String queryString = req.getQueryString();
+        Cookie[] cookies = req.getCookies();
 
         if (Constant.VALID_TIMEZONES.contains(queryString)) {
-            String parseTimeZone = DataTimeZone.parseTimeZone(queryString);
-            dataTimeZone = DataTimeZone.getDataTimeZone(parseTimeZone);
-        } else {
-            dataTimeZone = DataTimeZone.getDataTime();
+            String parseUtcTimeZone = DataTimeZone.parseTimeZone(queryString);
+            dataTimeZone = DataTimeZone.getCurrentUtcTime(parseUtcTimeZone);
+
+            resp.addCookie(new Cookie("lastTimeZone", parseUtcTimeZone));
+        } else if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("lastTimeZone".equals(cookie.getName())) {
+                        String lastUtcTimeZone = cookie.getValue();
+                        dataTimeZone = DataTimeZone.getCurrentUtcTime(lastUtcTimeZone);
+                        break;
+                    }
+                }
         }
 
         Context context = Thymeleaf.getContext(dataTimeZone);
         Respaonce.writer(thymeleaf, HTML_TEMPLATE, context, resp);
     }
 }
+
 

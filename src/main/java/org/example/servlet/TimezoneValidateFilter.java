@@ -38,7 +38,7 @@ public final class TimezoneValidateFilter implements Filter {
 
             String queryString = httpRequest.getQueryString();
 
-            if (Constant.VALID_TIMEZONES.contains(queryString) || queryString == null) {
+            if (queryString == null || Constant.VALID_TIMEZONES.contains(queryString)) {
                 chain.doFilter(request, response);
             } else {
                 httpResponse.setContentType("text/html");

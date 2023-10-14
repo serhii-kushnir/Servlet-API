@@ -1,15 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Current Time</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 20vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <center>
-        <h1 th:text="${invalid}"></h1>
-    </center>
+<div>
+    <h1 th:text="${invalid}"></h1>
+</div>
 </body>
 </html>
+
+
